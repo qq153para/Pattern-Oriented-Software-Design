@@ -1,11 +1,10 @@
-#include "../../src/iterator/factory/dfs_iterator_factory.h"
+#include "../../src/iterator/factory/list_iterator_factory.h"
 #include "../../src/compound_shape.h"
 #include "../../src/shape.h"
-#include "../../src/rectangle.h"
 
 #include <iostream>
 
-class DFSCompoundIteratorTest : public ::testing::Test
+class ListCompoundIteratorTest : public ::testing::Test
 {
 protected:
     Point *p1, *p2, *p3, *p4;
@@ -24,15 +23,12 @@ protected:
         vec2 = new TwoDimensionalVector(p1, p3);
         vec3 = new TwoDimensionalVector(p1, p4);
 
-        cs1 = new CompoundShape(new Shape* {},0);
-        cs1->addShape(new Circle(vec1));
-        cs1->addShape(new Rectangle(vec1,vec2));
-
         cs2 = new CompoundShape(new Shape* {},0);
+        cs2->addShape(new Circle(vec1));
+        cs2->addShape(new Rectangle(vec1,vec2));
         cs2->addShape(new Circle(vec3));
-        cs2->addShape(cs1);
 
-        it = cs2->createIterator(new DFSIteratorFactory());
+        it = cs2->createIterator(new ListIteratorFactory());
     }
 
     void TearDown() override
@@ -49,20 +45,19 @@ protected:
     }
 };
 
-TEST_F(DFSCompoundIteratorTest, CurrentItemShouldBeCorrect)
+TEST_F(ListCompoundIteratorTest, CurrentItemShouldBeCorrect)
 {
-    ASSERT_EQ(3 * 3 * M_PI, it->currentItem()->area());
+    ASSERT_EQ(5 * 5 * M_PI, it->currentItem()->area());
 }
 
-TEST_F(DFSCompoundIteratorTest, NextShouldBeCorrect)
+TEST_F(ListCompoundIteratorTest, NextShouldBeCorrect)
 {
     it->next();
-    ASSERT_EQ(5 * 5 * M_PI + 25, it->currentItem()->area());
+    ASSERT_EQ( 25, it->currentItem()->area());
 }
 
-TEST_F(DFSCompoundIteratorTest, IsDoneShouldBeCorrect)
+TEST_F(ListCompoundIteratorTest, IsDoneShouldBeCorrect)
 {
-    it->next();
     it->next();
     it->next();
     it->next();
@@ -70,9 +65,8 @@ TEST_F(DFSCompoundIteratorTest, IsDoneShouldBeCorrect)
     ASSERT_TRUE(it->isDone());
 }
 
-TEST_F(DFSCompoundIteratorTest, CurrentItemShouldThrowExceptionWhenIsDone)
+TEST_F(ListCompoundIteratorTest, CurrentItemShouldThrowExceptionWhenIsDone)
 {
-    it->next();
     it->next();
     it->next();
     it->next();
@@ -80,9 +74,8 @@ TEST_F(DFSCompoundIteratorTest, CurrentItemShouldThrowExceptionWhenIsDone)
     ASSERT_ANY_THROW(it->next());
 }
 
-TEST_F(DFSCompoundIteratorTest, NextShouldThrowExceptionWhenIsDone)
+TEST_F(ListCompoundIteratorTest, NextShouldThrowExceptionWhenIsDone)
 {
-    it->next();
     it->next();
     it->next();
     it->next();

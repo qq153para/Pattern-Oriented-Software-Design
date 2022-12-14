@@ -1,9 +1,12 @@
 #pragma once
 
 #include <string>
+#include <set>
 #include "shape.h"
 #include "two_dimensional_vector.h"
-#include "./iterator/null_iterator.h"
+#include "point.h"
+#include "./iterator/factory/iterator_factory.h"
+#include "./visitor/shape_visitor.h"
 
 class Triangle : public Shape
 {
@@ -66,11 +69,22 @@ public:
         return Triangle+Space+LeftBracket+_v1->info()+Comma+Space+_v2->info()+RightBracket;
     }
 
-    Iterator* createDFSIterator() override { return new NullIterator(); }
+    Iterator *createIterator(IteratorFactory *factory) override {
+        return factory->createIterator();
+    }
 
-    Iterator* createBFSIterator() override { return new NullIterator(); }
+    std::set<const Point*> getPoints() override{
+        std::set<const Point*> AllVertices; 
+        AllVertices.insert(_v1->a());
+        AllVertices.insert(_v1->b());
+        AllVertices.insert(_v2->a());
+        AllVertices.insert(_v2->b());
+        return AllVertices;
+    };
 
-    Iterator* createIterator() override { return new NullIterator(); }
+    void accept(ShapeVisitor* visitor) override{
+        visitor->visitTriangle(this);
+    };
 
     void addShape(Shape *shape) {throw "fail";};
     

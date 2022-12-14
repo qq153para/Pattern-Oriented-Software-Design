@@ -12,7 +12,7 @@ In this assignment, you are required to implement a simple algorithm of collisio
 
 Collision detection is an important issue for many field such as game engine or physics simulation. There are many algorithms can be used in either 2D or 3D space. A simple way to implement collision detection in 2D is called **Axis-aligned minimum bounding box (AABB)**. AABB is an rectangle enclosing the objects that should be detected. By comparing the coordinates of AABBs, we can easily know which objects have collided.
 
-![Compound shape examples](CollisionExample.png)
+![Compound shape examples](./materials/CollisionExample.png)
 
 As shown above, the AABB of a shape surrounds the shape itself and is not rotated no matter what a shape look like. An AABB is made by two coordinates, the upper right and the lower left ones. The x and y of the upper right coordinate are the the maximum x/y of all vertices of the shape; the lower left, the minimum. For `CompoundShape`, its AABB encloses all AABBs it contains.
 
@@ -84,7 +84,7 @@ For example, in `Circle`, the `accept` calls `visitCircle` from the visitor, in 
 2. Another new method: `getPoints` is added, which returns all vertices of the shape. This method is used to produce the AABB, because the AABB needs the vertices of the shape to calculate the maximum and minimum coordinates.
     * For `Triangle`, the method overriding just returns all vertices the triangle has.
     * For `Rectangle`, since a rectangle has only three vertices at the beginning, the method overriding should calculate the fourth vertex before returning all vertices. [To get the fourth vertex](https://stackoverflow.com/a/53392548), given two vertical vectors v1(A, B) and v2(B, C), the fourth vertex D will be A + C - B, regardless of the rotation of rectangle.
-    * For `Circle`, since a circle only has the center, the method overriding should directly calculate and return the upper right and lower right coordinates of the AABB of the circle.
+    * For `Circle`, since a circle only has the center, the method overriding should directly calculate and return the upper right and lower left coordinates of the AABB of the circle.
     * For `CompoundShape`, the method overriding returns all vertices of all shapes that the compound shape contains.
 
 3. `createDFSIterator` and `createBFSIterator` are replaced with `createIterator`. The `createIterator` method takes a `IteratorFactory` as an argument. The shape calls the `createIterator` of `IteratorFactory` to create an iterator. Shapes now have no way of knowing which iterator is going to be created. This depends on how the client wants to traverse the shapes. By using the `IteratorFactory` interface, if there is a new iterator in the future, the `Shape` class won't be modified again.

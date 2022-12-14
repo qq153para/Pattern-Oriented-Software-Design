@@ -1,10 +1,12 @@
 #pragma once
 
 #include <string>
+#include <set>
 #include <cmath>
 #include "two_dimensional_vector.h"
-#include "shape.h"
-#include "./iterator/null_iterator.h"
+#include "point.h"
+#include "./iterator/factory/iterator_factory.h"
+#include "./visitor/shape_visitor.h"
 
 class Circle : public Shape
 {
@@ -32,11 +34,23 @@ public:
         return Circle+Space+LeftBracket+_radiusVec->info()+RightBracket;
     }
 
-    Iterator* createDFSIterator() override { return new NullIterator(); }
+    Iterator *createIterator(IteratorFactory *factory) override {
+        return factory->createIterator();
+    }
 
-    Iterator* createBFSIterator() override { return new NullIterator(); }
+    std::set<const Point*> getPoints() {
+        std::set<const Point*> AllVertices; 
+        double radius=this->radius();
+        Point* UpperRight = new Point(_radiusVec->a()->x()+radius,_radiusVec->a()->y()+radius);
+        Point* LowerLeft = new Point(_radiusVec->a()->x()-radius,_radiusVec->a()->y()-radius);
+        AllVertices.insert(UpperRight);
+        AllVertices.insert(LowerLeft);
+        return AllVertices;
+    };
 
-    Iterator* createIterator() override { return new NullIterator(); }
+    void accept(ShapeVisitor* visitor) override{
+        visitor->visitCircle(this);
+    };
 
     void addShape(Shape *shape) {throw "fail";};
     

@@ -1,9 +1,12 @@
 #pragma once
 
 #include <string>
+#include <set>
 #include "shape.h"
 #include "two_dimensional_vector.h"
-#include "./iterator/null_iterator.h"
+#include "point.h"
+#include "./iterator/factory/iterator_factory.h"
+#include "./visitor/shape_visitor.h"
 
 class Rectangle : public Shape
 {
@@ -50,11 +53,40 @@ public:
         return Rectangle+Space+LeftBracket+_lengthVec->info()+Comma+Space+_widthVec->info()+RightBracket;
     }
 
-    Iterator* createDFSIterator() override { return new NullIterator(); }
+    Iterator *createIterator(IteratorFactory *factory) override {
+        return factory->createIterator();
+    }
 
-    Iterator* createBFSIterator() override { return new NullIterator(); }
+	std::set<const Point*> getPoints() override {
+        Point* fourthVertex;
+        if (_lengthVec->a()->operator==( *_widthVec->a())){
+            fourthVertex= new Point(_lengthVec->b()->x()+_widthVec->b()->x()-_lengthVec->a()->x()
+            ,_lengthVec->b()->y()+_widthVec->b()->y()-_lengthVec->a()->y());
+        }
+        else if(_lengthVec->a()->operator==( *_widthVec->b())){
+            fourthVertex= new Point(_lengthVec->b()->x()+_widthVec->a()->x()-_lengthVec->a()->x()
+            ,_lengthVec->b()->y()+_widthVec->a()->y()-_lengthVec->a()->y());
+        }
+        else if(_lengthVec->b()->operator==( *_widthVec->a())){
+            fourthVertex= new Point(_lengthVec->a()->x()+_widthVec->b()->x()-_widthVec->a()->x()
+            ,_lengthVec->a()->y()+_widthVec->b()->y()-_widthVec->a()->y());
+        }
+        else if(_lengthVec->b()->operator==( *_widthVec->b())){
+            fourthVertex= new Point(_lengthVec->a()->x()+_widthVec->a()->x()-_lengthVec->b()->x()
+            ,_lengthVec->a()->y()+_widthVec->a()->y()-_lengthVec->b()->y());
+        }
+        std::set<const Point*> AllVertices; 
+        AllVertices.insert(_lengthVec->a());
+        AllVertices.insert(_lengthVec->b());
+        AllVertices.insert(_widthVec->a());
+        AllVertices.insert(_widthVec->b());
+		AllVertices.insert(fourthVertex);
+        return AllVertices;
+    };
 
-    Iterator* createIterator() override { return new NullIterator(); }
+    void accept(ShapeVisitor* visitor) override{
+        visitor->visitRectangle(this);
+    };
 
     void addShape(Shape *shape) {throw "fail";};
     

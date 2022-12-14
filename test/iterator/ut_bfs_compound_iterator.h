@@ -1,4 +1,4 @@
-#include "../../src/iterator/bfs_compound_iterator.h"
+#include "../../src/iterator/factory/bfs_iterator_factory.h"
 #include "../../src/compound_shape.h"
 #include "../../src/shape.h"
 #include "../../src/rectangle.h"
@@ -32,7 +32,7 @@ protected:
         cs2->addShape(new Circle(vec3));
         cs2->addShape(cs1);
 
-        it = cs2->createBFSIterator();
+        it = cs2->createIterator(new BFSIteratorFactory());
     }
 
     void TearDown() override

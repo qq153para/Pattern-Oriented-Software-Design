@@ -21,3 +21,17 @@ TEST(RectangleTest, testexception1) {
 TEST(RectangleTest, testexception2) { 
     EXPECT_THROW(   Rectangle rec(new TwoDimensionalVector ( new Point(-1, 1), new Point(1.5, 0.47)),new TwoDimensionalVector (new Point(-2, 1), new Point(-1.47, 4.5))),const  char*);
 }
+TEST(RectangleTest, testgetPoints) { 
+    Point *p1=new Point(0.00, 0.00);
+    Point *p2=new Point(2.00, 2.00);
+    Point *p3=new Point(-2.00, 2.00);
+    Point *p4=new Point(0.00, 4.00);
+    Shape *rec=new Rectangle(new TwoDimensionalVector (p1 ,p2),new TwoDimensionalVector (p1,p3));
+    std::set<const Point*> AllVertices=rec->getPoints(); 
+    std::set<const Point*>::iterator it;
+    AllVertices.erase (AllVertices.find(p1));
+    AllVertices.erase (AllVertices.find(p2));
+    AllVertices.erase (AllVertices.find(p3));
+    for (auto v: AllVertices)
+        ASSERT_TRUE(v->operator==(*p4));
+}

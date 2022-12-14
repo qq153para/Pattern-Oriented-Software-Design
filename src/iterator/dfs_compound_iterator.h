@@ -1,10 +1,7 @@
 #pragma once
-
-#include "iterator.h"
-#include "../shape.h"
+#include "./factory/dfs_iterator_factory.h"
 #include <list>
-#include <iostream>
-class CompoundShape;
+#include "iterator.h"
 
 template<class ForwardIterator>
 class DFSCompoundIterator : public Iterator
@@ -24,7 +21,8 @@ public:
         else{
             _shpaes.clear();
             for (std::list<Shape*>::const_iterator it = _begin; it != _end; ++it){
-                _currentIterator=(*it)->createDFSIterator();
+                // _currentIterator=(*it)->createDFSIterator();
+                _currentIterator=(*it)->createIterator(new DFSIteratorFactory());
                 _shpaes.push_back((*it));
                 while(_currentIterator->isDone()==false){
                     _shpaes.push_back(_currentIterator->currentItem());
@@ -61,7 +59,7 @@ public:
 private:
     ForwardIterator _begin;
     ForwardIterator _end;
-    std::list<Shape *>::iterator _thiscurrent;
+    std::list<Shape *>::const_iterator _thiscurrent;
     Iterator* _currentIterator;
     std::list<Shape *> _shpaes;
 };

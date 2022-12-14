@@ -1,11 +1,9 @@
 #pragma once
-
+#include "./iterator/factory/list_iterator_factory.h"
+#include "./visitor/shape_visitor.h"
 #include "shape.h"
-#include "./iterator/dfs_compound_iterator.h"
-#include "./iterator/bfs_compound_iterator.h"
-#include "./iterator/compound_iterator.h"
-
 #include <list>
+#include <set>
 
 class CompoundShape : public Shape
 {
@@ -41,7 +39,6 @@ public:
         std::string CompoundShape = "CompoundShape";
         std::string Comma = ",";
         std::string result = CompoundShape + Space + LeftBracket;
-        std::stringstream stream;
         int i = 0;
         int size =_shapes.size();
         for (auto shape_ptr : _shapes) {
@@ -56,17 +53,24 @@ public:
         return result;
     }
 
-    Iterator* createDFSIterator() override {
-        return new DFSCompoundIterator<std::list<Shape *>::iterator>(_shapes.begin(), _shapes.end());
-    }
-    // //begin+size 即為 end
-    Iterator* createBFSIterator() override {
-        return new BFSCompoundIterator<std::list<Shape *>::iterator>(_shapes.begin(), _shapes.end());
+	Iterator *createIterator(IteratorFactory *factory) override {
+        return factory -> createIterator(_shapes.begin(), _shapes.end());
     }
 
-    Iterator* createIterator() override { 
-        return new CompoundIterator<std::list<Shape *>::iterator>(_shapes.begin(), _shapes.end());
-    }
+	std::set<const Point*> getPoints() override {
+        // Iterator* it = this->createIterator(new ListIteratorFactory());
+        std::set<const Point*> AllVertices; 
+        for (auto shape_ptr : _shapes) {
+            for (auto v :shape_ptr->getPoints()){
+                AllVertices.insert(v);
+            }      
+        }
+        return AllVertices;
+    };
+	
+	void accept(ShapeVisitor* visitor) override{
+        visitor->visitCompoundShape(this);
+    };
 
     void addShape(Shape* shape) override {
         _shapes.push_back(shape);
@@ -75,7 +79,7 @@ public:
     void deleteShape(Shape* shape) override {
         _shapes.remove(shape); 
         for (auto shape_ptr : _shapes) {
-            Iterator* it=shape_ptr->createBFSIterator();
+            Iterator* it=shape_ptr->createIterator(new ListIteratorFactory());
             if(!it->isDone()){
                 shape_ptr->deleteShape(shape);        
             }

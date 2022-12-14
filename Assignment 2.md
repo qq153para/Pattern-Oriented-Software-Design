@@ -11,7 +11,7 @@ In this assignment, you are required to implement `Composite pattern` and `Itera
 
 We have implemented various shapes such as `Triangle`, `Rectangle`, and `Circle`. Now we have a new type of shape called `CompoundShape`, which is composed of multiple shapes. For example, two upside-down triangles of the same angles and length can compose a composed shape that looks like a parallelogram or a rectangle, or several rectangles can compose the compound shapes that look like tetrominoes in Tetris. A compound shape can be composed of other compound shapes to make a more complicated shape. To carry out this idea, we need to implement `Composite pattern` with shapes.
 
-![Compound shape examples](./materials/CompoundShapeExample.png)
+![Compound shape examples](CompoundShapeExample.png)
 
 For a compound shape, we would like to traverse its tree structure. Since we implement `Composite pattern`, the internal structure of the compound shape will be a nested tree-like structure. Instead of having a getter method from the compound shape interface, we adopt `Iterator pattern`. By iterator, we can traverse the shapes in a compound shape in different ways, such as [BFS](https://www.wikiwand.com/en/Breadth-first_search) or [DFS](https://www.wikiwand.com/en/Depth-first_search), without knowing its internal structure.
 
