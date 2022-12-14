@@ -1,30 +1,33 @@
 #include "../src/two_dimensional_vector.h"
 // vector (5.04,0.88)
 TEST(TwoDimensionalVectorTest, testlength) {
-    TwoDimensionalVector  Vector(
-    new Point(-8.42, 3.42),
-    new Point(-3.38, 4.3));
+    Point p1(-8.42, 3.42);
+    Point p2(-3.38, 4.3);
+    TwoDimensionalVector  Vector(p1,p2);
+
     ASSERT_NEAR(Vector.length(),5.11625,0.001);
 }
 TEST(TwoDimensionalVectorTest, testcross) {
-    TwoDimensionalVector  Vector1(
-    new Point(-8.42, 3.42),
-    new Point(-3.38, 4.3));
-    TwoDimensionalVector  Vector2(
-    new Point(4, 0),
-    new Point(5, 1));
-    ASSERT_NEAR(Vector1.cross(&Vector2),4.16,0.001);
+    Point p1(-8.42, 3.42);
+    Point p2(-3.38, 4.3);
+    Point p3(4, 0);
+    Point p4(5, 1);
+    TwoDimensionalVector  Vector1(p1,p2);
+    TwoDimensionalVector  Vector2(p3,p4);
+    ASSERT_NEAR(Vector1.cross(Vector2),4.16,0.001);
 }
 TEST(TwoDimensionalVectorTest, testdot) {
-    TwoDimensionalVector  Vector1(
-    new Point(-8.42, 3.42),
-    new Point(-3.38, 4.3));
-    TwoDimensionalVector  Vector2(
-    new Point(4, 0),
-    new Point(5, 1));
-    ASSERT_NEAR(Vector1.dot(&Vector2),5.92,0.001);
+    Point p1(-8.42, 3.42);
+    Point p2(-3.38, 4.3);
+    Point p3(4, 0);
+    Point p4(5, 1);
+    TwoDimensionalVector  Vector1(p1,p2);
+    TwoDimensionalVector  Vector2(p3,p4);
+    ASSERT_NEAR(Vector1.dot(Vector2),5.92,0.001);
 }
 TEST(TwoDimensionalVectorTest, testinfo) {
-    TwoDimensionalVector Vector(new Point(-8.42, 3.42),new Point(-3.38, 4.3));
+    Point p1(-8.42, 3.42);
+    Point p2(-3.38, 4.3);
+    TwoDimensionalVector Vector(p1,p2);
     ASSERT_STREQ("Vector ((-8.42, 3.42), (-3.38, 4.30))",Vector.info().c_str());
 }

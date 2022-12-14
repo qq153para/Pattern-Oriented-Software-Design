@@ -19,24 +19,24 @@ public:
     CollisionDetector(Shape *shape) {
         _targetBoundingBox=new BoundingBox(shape->getPoints());
     }
-
+    ~CollisionDetector(){delete _targetBoundingBox;}
     void visitCircle(Circle *circle) override {
-        BoundingBox *AABB = new BoundingBox(circle->getPoints());
-        if(AABB->collide(_targetBoundingBox)){
+        BoundingBox AABB (circle->getPoints());
+        if(AABB.collide(_targetBoundingBox)){
             _collideResult.push_back(circle);
         }
     }
 
     void visitTriangle(Triangle *triangle) override {
-        BoundingBox *AABB = new BoundingBox(triangle->getPoints());
-        if(AABB->collide(_targetBoundingBox)){
+        BoundingBox AABB (triangle->getPoints());
+        if(AABB.collide(_targetBoundingBox)){
             _collideResult.push_back(triangle);
         }
     }
 
     void visitRectangle(Rectangle *rectangle) override {
-        BoundingBox *AABB = new BoundingBox(rectangle->getPoints());
-        if(AABB->collide(_targetBoundingBox)){
+        BoundingBox AABB (rectangle->getPoints());
+        if(AABB.collide(_targetBoundingBox)){
             _collideResult.push_back(rectangle);
         }
     }
@@ -46,6 +46,7 @@ public:
         for (it-> first();!it->isDone() ;it->next()){
             (it->currentItem())->accept(this);
         }
+        delete it;
     }
 
     std::vector<Shape *> collidedShapes() const {

@@ -14,7 +14,11 @@ public:
     CompoundShape(Shape **shapes, int size) 
     :_shapes(shapes, shapes + size) {}
 
-    ~CompoundShape() {}
+    ~CompoundShape() {
+        for (auto shape_ptr : _shapes) {
+            delete shape_ptr;
+        }
+    }
 
     double area() const override {
         double result = 0;
@@ -57,9 +61,9 @@ public:
         return factory -> createIterator(_shapes.begin(), _shapes.end());
     }
 
-	std::set<const Point*> getPoints() override {
+	std::set<Point> getPoints() override {
         // Iterator* it = this->createIterator(new ListIteratorFactory());
-        std::set<const Point*> AllVertices; 
+        std::set<Point> AllVertices; 
         for (auto shape_ptr : _shapes) {
             for (auto v :shape_ptr->getPoints()){
                 AllVertices.insert(v);
@@ -76,14 +80,24 @@ public:
         _shapes.push_back(shape);
     }
 
-    void deleteShape(Shape* shape) override {
-        _shapes.remove(shape); 
-        for (auto shape_ptr : _shapes) {
-            Iterator* it=shape_ptr->createIterator(IteratorFactory::getInstance("List"));
-            if(!it->isDone()){
-                shape_ptr->deleteShape(shape);        
+    void deleteShape(Shape *shape) override
+    {
+        for (std::list<Shape *>::const_iterator it = _shapes.begin(); it != _shapes.end(); ++it)
+        {
+            if (*it == shape)
+            {
+                delete *it;
+                _shapes.erase(it);
+                break;
             }
-            delete it;
+            else
+            {
+                Iterator *shapeIt = (*it)->createIterator(IteratorFactory::getInstance("DFS"));
+                if (!shapeIt->isDone())
+                    (*it)->deleteShape(shape);
+                delete shapeIt;
+            }
         }
     }
+
 };

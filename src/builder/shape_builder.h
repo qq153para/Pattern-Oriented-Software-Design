@@ -7,12 +7,12 @@
 #include <stack>
 
 class ShapeBuilder{
-private:
-    std::vector<Shape*> _result;
 public:
-
-    void buildCircle(const Point *center, const Point *to_radius) {
-        Shape* circle = new Circle(new TwoDimensionalVector(center,to_radius));
+    ~ShapeBuilder(){
+    }
+    void buildCircle(Point center, Point to_radius) {
+        TwoDimensionalVector t1(center,to_radius);
+        Shape* circle = new Circle(t1);
         if(!composites.empty()){
             composites.top()->addShape(circle);
         }
@@ -21,9 +21,10 @@ public:
         }
     }
 
-    void buildTriangle(const Point *common_point, const Point *v1_point, const Point *v2_point) {
-        Shape* triangle = new Triangle(new TwoDimensionalVector(common_point,v1_point)
-                                        ,new TwoDimensionalVector(common_point,v2_point));
+    void buildTriangle(Point common_point,Point v1_point, Point v2_point) {
+        TwoDimensionalVector t1(common_point,v1_point);
+        TwoDimensionalVector t2(common_point,v2_point);
+        Shape* triangle = new Triangle( t1, t2);
         if(!composites.empty()){
             composites.top()->addShape(triangle);
         }
@@ -32,9 +33,10 @@ public:
         } 
     }
 
-    void buildRectangle(const Point *common_point, const Point *v1_point, const Point *v2_point) {
-        Shape* rectangle = new Rectangle(new TwoDimensionalVector(common_point,v1_point)
-                                        ,new TwoDimensionalVector(common_point,v2_point));
+    void buildRectangle(Point common_point, Point v1_point, Point v2_point) {
+        TwoDimensionalVector t1(common_point,v1_point);
+        TwoDimensionalVector t2(common_point,v2_point);
+        Shape* rectangle = new Rectangle(t1,t2);
         if(!composites.empty()){
             composites.top()->addShape(rectangle);
         }
@@ -44,8 +46,10 @@ public:
     }
 
     void buildCompoundShape() {
-        CompoundShape* cs = new CompoundShape(new Shape* {},0);
+        Shape ** s1 = new Shape* {};
+        CompoundShape* cs = new CompoundShape(s1,0);
         composites.push(cs);
+        delete s1;
     }
 
     void buildCompoundEnd() {

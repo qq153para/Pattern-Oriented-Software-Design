@@ -11,6 +11,9 @@ protected:
     TwoDimensionalVector *vec1, *vec2, *vec3;
     CompoundShape *cs1, *cs2;
     Iterator* it;
+    Shape** s1;
+    Shape *cir1 ,*cir2;
+    Shape *rec;
 
     void SetUp() override
     {
@@ -19,15 +22,18 @@ protected:
         p3 = new Point(5, 0);
         p4 = new Point(0, 3);
 
-        vec1 = new TwoDimensionalVector(p1, p2);
-        vec2 = new TwoDimensionalVector(p1, p3);
-        vec3 = new TwoDimensionalVector(p1, p4);
-
-        cs2 = new CompoundShape(new Shape* {},0);
-        cs2->addShape(new Circle(vec1));
-        cs2->addShape(new Rectangle(vec1,vec2));
-        cs2->addShape(new Circle(vec3));
-
+        vec1 = new TwoDimensionalVector(*p1, *p2);
+        vec2 = new TwoDimensionalVector(*p1,*p3);
+        vec3 = new TwoDimensionalVector(*p1, *p4);
+        s1 =new Shape* {};
+        cs2 = new CompoundShape(s1,0);
+        cir1 =new Circle(*vec1);
+        cir2 =new Circle(*vec3);
+        rec =new Rectangle(*vec1,*vec2);
+        cs2->addShape(cir1);
+        cs2->addShape(rec);
+        cs2->addShape(cir2);
+        
         it = cs2->createIterator(IteratorFactory::getInstance("List"));
     }
 
@@ -42,6 +48,7 @@ protected:
         delete vec2;
         delete vec3;
         delete it;
+        delete s1;
     }
 };
 

@@ -17,7 +17,9 @@ private:
 public:
     ShapeParser(std::string input):_input(input) {}
 
-    ~ShapeParser() {}
+    ~ShapeParser() {
+        delete _scanner;
+    }
 
     void parse() {
         _scanner=new Scanner(_input);
@@ -41,8 +43,8 @@ public:
                 _scanner->next();
                 _scanner->next();
                 _scanner->next();
-                
-                _builder.buildCircle(new Point(x1,y1),new Point(x2,y2));
+                Point p1(x1,y1);Point p2(x2,y2);
+                _builder.buildCircle(p1,p2);
             }
             if ( token=="Rectangle" ) {
                 _scanner->next();
@@ -76,7 +78,8 @@ public:
                 _scanner->next();
                 _scanner->next();
                 _scanner->next();
-                std::vector<Point*> input= _findCommonPoint(new Point(x1,y1),new Point(x2,y2),new Point(x3,y3),new Point(x4,y4));
+                Point p1(x1,y1);Point p2(x2,y2);Point p3(x3,y3);Point p4(x4,y4);
+                std::vector<Point> input= _findCommonPoint(p1,p2,p3,p4);
                 _builder.buildRectangle(input[0],input[1],input[2]);
                 // _builder.buildRectangle(new Point(0,0),new Point(2,0),new Point(0,2));
             }
@@ -112,7 +115,8 @@ public:
                 _scanner->next();
                 _scanner->next();
                 _scanner->next();
-                std::vector<Point*> input= _findCommonPoint(new Point(x1,y1),new Point(x2,y2),new Point(x3,y3),new Point(x4,y4));
+                Point p1(x1,y1);Point p2(x2,y2);Point p3(x3,y3);Point p4(x4,y4);
+                std::vector<Point> input= _findCommonPoint(p1,p2,p3,p4);
                 _builder.buildTriangle(input[0],input[1],input[2]);
             }
             else if( token=="CompoundShape" ) {
@@ -139,34 +143,34 @@ public:
         return _builder.getResult();
     }
 
-    std::vector<Point*> _findCommonPoint(Point* a , Point* b ,Point* c , Point* d){
-        std::vector<Point*> result;
-        if(a->operator==(*b)){
+    std::vector<Point> _findCommonPoint(Point a , Point b ,Point c , Point d){
+        std::vector<Point> result;
+        if(a.operator==(b)){
             result.push_back(a); 
             result.push_back(c);
             result.push_back(d);
         }
-        else if(a->operator==(*c)){
+        else if(a.operator==(c)){
             result.push_back(a); 
             result.push_back(b);
             result.push_back(d);
         }
-        else if(a->operator==(*d)){
+        else if(a.operator==(d)){
             result.push_back(a); 
             result.push_back(b);
             result.push_back(c);
         }
-        else if(b->operator==(*c)){
+        else if(b.operator==(c)){
             result.push_back(b); 
             result.push_back(a);
             result.push_back(d);
         }
-        else if(b->operator==(*d)){
+        else if(b.operator==(d)){
             result.push_back(b); 
             result.push_back(a);
             result.push_back(c);
         }
-        else if(c->operator==(*d)){
+        else if(c.operator==(d)){
             result.push_back(c); 
             result.push_back(a);
             result.push_back(b);

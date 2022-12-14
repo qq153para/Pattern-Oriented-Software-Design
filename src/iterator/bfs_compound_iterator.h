@@ -1,68 +1,57 @@
 #pragma once
-#include<iostream>
-#include <list>
+
 #include "iterator.h"
-#include "./factory/list_iterator_factory.h"
+#include "../shape.h"
+#include "./factory/bfs_iterator_factory.h"
+#include <queue>
+#include <list>
 
 template<class ForwardIterator>
 class BFSCompoundIterator : public Iterator
 {
-public:
-    BFSCompoundIterator(ForwardIterator begin, ForwardIterator end) 
-    :_begin(begin),_end(end)
-    { 
-        this->first();  
-    }
-
-    void first() override {
-        _thiscurrent = _begin;
-        _current= this;
-       for (std::list<Shape*>::const_iterator it = _begin; it != _end; ++it){
-                _shapes.push_back((*it));
-                _shapesout.push_back((*it));
-        }
-        while(_shapes.empty()==false){
-            _currentShape=_shapes.front();
-            _current=_currentShape->createIterator(IteratorFactory::getInstance("List"));
-            _shapes.pop_front();
-            while(_current->isDone()==false){
-                _shapes.push_back(_current->currentItem());
-                _shapesout.push_back(_current->currentItem());
-                _current->next();
-            }
-        }
-        _thiscurrent=_shapesout.begin();
-    }
-
-    Shape* currentItem() const override {
-            if(this->isDone()){
-                throw "It is done";
-            }
-            else{
-                return *_thiscurrent;
-            }    
-    }
-
-    void next() override {
-        if(this->isDone()){
-                throw "It is done";
-        }
-        else{
-            _thiscurrent++;
-        }
-    }
-
-    bool isDone() const override {
-        return _thiscurrent == _shapesout.end() ;        
-    }
 private:
-    ForwardIterator _begin;
-    ForwardIterator _end; 
-    std::list<Shape *>::const_iterator _thiscurrent;
-    Iterator* _current;
-    Shape* _currentShape;
-    std::list<Shape *> _shapes;
-    std::list<Shape *> _shapesout;
-    bool _isDone;   // 判斷父節點是否為最後
+    std::queue<Shape*> _shapes;
+public:
+    BFSCompoundIterator(ForwardIterator begin, ForwardIterator end)
+    {
+        std::list<Iterator*> buffer;
+        for(ForwardIterator it=begin; it!=end; it++)
+        {
+            _shapes.push(*it);
+            buffer.push_back((*it)->createIterator(IteratorFactory::getInstance("BFS")));
+        }
+        for(std::list<Iterator*>::const_iterator it = buffer.begin(); it!= buffer.end(); it++)
+        {
+            for(;!(*it)->isDone() ;(*it)->next())
+            {
+                _shapes.push((*it)->currentItem());
+            }
+            delete *it;
+        }
+    }
 
+    void first() override {}
+
+    Shape* currentItem() const override
+    {
+        if(isDone())
+        {
+            throw "no current item";
+        }
+        return _shapes.front();
+    }
+
+    void next() override
+    {
+        if(isDone())
+        {
+            throw "no current item";
+        }
+        _shapes.pop();
+    }
+
+    bool isDone() const override
+    {
+        return _shapes.size() == 0;
+    }
 };

@@ -7,6 +7,7 @@ TEST(ShapeParserrTest, ParseCompoundShapeShouldBeCorrect) {
     parser.parse();
     std::vector<Shape*> result = parser.getResult();
     ASSERT_EQ(25+5*5*M_PI, (result[0])->area());
+    delete *(result.begin());
 }
 
 TEST(ShapeParserrTest, ParseCircleShouldBeCorrect) {
@@ -15,6 +16,7 @@ TEST(ShapeParserrTest, ParseCircleShouldBeCorrect) {
     parser.parse();
     std::vector<Shape*> result = parser.getResult();
     ASSERT_EQ(5*5*M_PI, (result[0])->area());
+    delete *(result.begin());
 }
 
 TEST(ShapeParserrTest, ParseTriangleShouldBeCorrect) {
@@ -23,6 +25,7 @@ TEST(ShapeParserrTest, ParseTriangleShouldBeCorrect) {
     parser.parse();
     std::vector<Shape*> result = parser.getResult();
     ASSERT_EQ(6, (result[0])->area());
+    delete *(result.begin());
 }
 
 TEST(ShapeParserrTest, ParseRectangleShouldBeCorrect) {
@@ -31,5 +34,6 @@ TEST(ShapeParserrTest, ParseRectangleShouldBeCorrect) {
     parser.parse();
     std::vector<Shape*> result = parser.getResult();
     ASSERT_EQ(2*2, (result[0])->area());
+    delete *(result.begin());
 }
 

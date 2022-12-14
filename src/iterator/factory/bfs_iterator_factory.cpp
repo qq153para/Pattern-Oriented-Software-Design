@@ -2,7 +2,7 @@
 #include "../null_iterator.h"
 #include "../bfs_compound_iterator.h"
 
-BFSIteratorFactory BFSIteratorFactory::s_self;
+BFSIteratorFactory BFSIteratorFactory::s_self ;
 Iterator * BFSIteratorFactory::createIterator(){
         return new NullIterator();
 };

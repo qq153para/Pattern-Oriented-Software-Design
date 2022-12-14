@@ -15,6 +15,7 @@
 #include "./builder/ut_shape_builder.h"
 #include "./builder/ut_scanner.h"
 #include "./builder/ut_shape_parser.h"
+#include "./utils/ut_file_reader.h"
 
 int main(int argc, char **argv)
 {

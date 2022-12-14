@@ -35,6 +35,10 @@ public:
         }
     }
 
+    bool operator<(const Point &pt) const {
+        return _x < pt.x() || (_x == pt.x() && _y < pt.y());
+    }
+
     std::string info() const {
         std::string Space = " ";
         std::string LeftBracket = "(";

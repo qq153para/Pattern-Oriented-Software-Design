@@ -11,34 +11,28 @@
 class Rectangle : public Shape
 {
 private:
-    TwoDimensionalVector *_lengthVec;
-    TwoDimensionalVector *_widthVec;
+    TwoDimensionalVector _lengthVec;
+    TwoDimensionalVector _widthVec;
 
 public:
-    Rectangle(TwoDimensionalVector *lengthVec, TwoDimensionalVector *widthVec) {
+    Rectangle(TwoDimensionalVector lengthVec, TwoDimensionalVector widthVec) : _lengthVec(lengthVec),_widthVec(widthVec){
         //判斷兩向量是否正交  -----> 兩內積為0則正交
-        if (lengthVec->dot(widthVec)!=0)
+        if (lengthVec.dot(widthVec)!=0)
         {
             throw "This recthangle isn't created by two orthogonal vectors";
         }
         //判斷兩向量之兩端點是否交於一點  ----> False則兩向量之端點都不相交
-        else if ((lengthVec->a()->operator==( *widthVec->a())||lengthVec->a()->operator==( *widthVec->b())||
-                lengthVec->b()->operator==( *widthVec->a())||lengthVec->b()->operator==( *widthVec->b()))==false)
+        else if ((lengthVec.a().operator==( widthVec.a())||lengthVec.a().operator==( widthVec.b())||
+                lengthVec.b().operator==( widthVec.a())||lengthVec.b().operator==( widthVec.b()))==false)
         {
             throw "The two vectors should be connected at either head or tail side"; 
-        }
-        //符合Rectangle創建之規範
-        else{
-            this->_lengthVec = lengthVec;
-            this->_widthVec = widthVec;
-        }
-        
+        }     
     }
     ~Rectangle() {}
 
-    double length() const { return _lengthVec->length();}
+    double length() const { return _lengthVec.length();}
 
-    double width() const { return _widthVec->length();}
+    double width() const { return _widthVec.length();}
     
     double area() const override {return this->length()*this->width();}
 
@@ -50,37 +44,67 @@ public:
         std::string RightBracket = ")";
         std::string Rectangle = "Rectangle";
         std::string Comma = ",";
-        return Rectangle+Space+LeftBracket+_lengthVec->info()+Comma+Space+_widthVec->info()+RightBracket;
+        return Rectangle+Space+LeftBracket+_lengthVec.info()+Comma+Space+_widthVec.info()+RightBracket;
     }
 
     Iterator *createIterator(IteratorFactory *factory) override {
         return factory->createIterator();
     }
 
-	std::set<const Point*> getPoints() override {
-        Point* fourthVertex;
-        if (_lengthVec->a()->operator==( *_widthVec->a())){
-            fourthVertex= new Point(_lengthVec->b()->x()+_widthVec->b()->x()-_lengthVec->a()->x()
-            ,_lengthVec->b()->y()+_widthVec->b()->y()-_lengthVec->a()->y());
+	std::set<Point> getPoints() override {
+        
+        std::set<Point> AllVertices; 
+        if (_lengthVec.a().operator==( _widthVec.a())){
+            Point fourthVertex(_lengthVec.b().x()+_widthVec.b().x()-_lengthVec.a().x()
+            ,_lengthVec.b().y()+_widthVec.b().y()-_lengthVec.a().y());
+            AllVertices = {
+            _lengthVec.a(),
+            _lengthVec.b(),
+            _widthVec.a(),
+            _widthVec.b(),
+            fourthVertex
+            };
         }
-        else if(_lengthVec->a()->operator==( *_widthVec->b())){
-            fourthVertex= new Point(_lengthVec->b()->x()+_widthVec->a()->x()-_lengthVec->a()->x()
-            ,_lengthVec->b()->y()+_widthVec->a()->y()-_lengthVec->a()->y());
+        else if(_lengthVec.a().operator==( _widthVec.b())){
+            Point fourthVertex(_lengthVec.b().x()+_widthVec.a().x()-_lengthVec.a().x()
+            ,_lengthVec.b().y()+_widthVec.a().y()-_lengthVec.a().y());
+            AllVertices = {
+            _lengthVec.a(),
+            _lengthVec.b(),
+            _widthVec.a(),
+            _widthVec.b(),
+            fourthVertex
+            };
         }
-        else if(_lengthVec->b()->operator==( *_widthVec->a())){
-            fourthVertex= new Point(_lengthVec->a()->x()+_widthVec->b()->x()-_widthVec->a()->x()
-            ,_lengthVec->a()->y()+_widthVec->b()->y()-_widthVec->a()->y());
+        else if(_lengthVec.b().operator==( _widthVec.a())){
+            Point fourthVertex(_lengthVec.a().x()+_widthVec.b().x()-_widthVec.a().x()
+            ,_lengthVec.a().y()+_widthVec.b().y()-_widthVec.a().y());
+            AllVertices = {
+            _lengthVec.a(),
+            _lengthVec.b(),
+            _widthVec.a(),
+            _widthVec.b(),
+            fourthVertex
+            };
         }
-        else if(_lengthVec->b()->operator==( *_widthVec->b())){
-            fourthVertex= new Point(_lengthVec->a()->x()+_widthVec->a()->x()-_lengthVec->b()->x()
-            ,_lengthVec->a()->y()+_widthVec->a()->y()-_lengthVec->b()->y());
+        else if(_lengthVec.b().operator==( _widthVec.b())){
+            Point fourthVertex (_lengthVec.a().x()+_widthVec.a().x()-_lengthVec.b().x()
+            ,_lengthVec.a().y()+_widthVec.a().y()-_lengthVec.b().y());
+            AllVertices = {
+            _lengthVec.a(),
+            _lengthVec.b(),
+            _widthVec.a(),
+            _widthVec.b(),
+            fourthVertex
+            };
         }
-        std::set<const Point*> AllVertices; 
-        AllVertices.insert(_lengthVec->a());
-        AllVertices.insert(_lengthVec->b());
-        AllVertices.insert(_widthVec->a());
-        AllVertices.insert(_widthVec->b());
-		AllVertices.insert(fourthVertex);
+        
+        // AllVertices.insert(_lengthVec.a());
+        // AllVertices.insert(_lengthVec.b());
+        // AllVertices.insert(_widthVec.a());
+        // AllVertices.insert(_widthVec.b());
+		
+
         return AllVertices;
     };
 

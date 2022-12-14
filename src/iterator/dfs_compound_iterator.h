@@ -1,65 +1,63 @@
 #pragma once
-#include "./factory/dfs_iterator_factory.h"
-#include <list>
+
 #include "iterator.h"
+#include "../shape.h"
+#include "./factory/dfs_iterator_factory.h"
+#include <queue>
+#include <iostream>
+
 
 template<class ForwardIterator>
 class DFSCompoundIterator : public Iterator
 {
-public:
-    DFSCompoundIterator(ForwardIterator begin, ForwardIterator end) 
-    :_begin(begin),_end(end)
-    {
-        this ->first();
-    }
-
-    void first() override {
-
-        if(_begin == _end){
-            _thiscurrent=_shpaes.begin();
-        }
-        else{
-            _shpaes.clear();
-            for (std::list<Shape*>::const_iterator it = _begin; it != _end; ++it){
-                // _currentIterator=(*it)->createDFSIterator();
-                _currentIterator=(*it)->createIterator(IteratorFactory::getInstance("DFS"));
-                _shpaes.push_back((*it));
-                while(_currentIterator->isDone()==false){
-                    _shpaes.push_back(_currentIterator->currentItem());
-                    _currentIterator->next();
-                }
-
-            }
-            _thiscurrent=_shpaes.begin();
-        }
-    }
-
-    Shape* currentItem() const override {
-        if(this->isDone()){
-            throw "It is done ";
-        }
-        else{
-            return *_thiscurrent ;
-        }
-        
-    }
-
-    void next() override {
-        if(this->isDone()){
-            throw "It is done ";
-        }
-        else{
-            _thiscurrent++;
-        }
-    }
-
-    bool isDone() const override {
-        return _thiscurrent==_shpaes.end();
-    }
 private:
-    ForwardIterator _begin;
-    ForwardIterator _end;
-    std::list<Shape *>::const_iterator _thiscurrent;
-    Iterator* _currentIterator;
-    std::list<Shape *> _shpaes;
+    std::queue<Shape*> _shapes;
+    std::queue<Shape*> _shapesfordelete;
+public:
+    DFSCompoundIterator(ForwardIterator begin, ForwardIterator end)
+    {
+        for(ForwardIterator it=begin; it!=end; it++)
+        {
+            Iterator *itt = (*it)->createIterator(IteratorFactory::getInstance("DFS"));
+            if(!itt->isDone())
+            {
+                _shapes.push(*it);
+                for(itt;!itt->isDone();itt->next())
+                {
+                    _shapes.push(itt->currentItem());
+                }
+            }
+            else
+            {
+                _shapes.push(*it);
+            }
+            delete itt;
+        }
+    }
+    ~DFSCompoundIterator(){    
+    }
+    void first() override {}
+
+    Shape* currentItem() const override
+    {
+        if(isDone())
+        {
+            throw "no current item";
+        }
+        return _shapes.front();
+    }
+
+    void next() override
+    {
+        if(isDone())
+        {
+            throw "no current item";
+        }
+        _shapes.pop();
+    }
+
+    bool isDone() const override
+    {
+        return _shapes.size() == 0;
+    }
 };

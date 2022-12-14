@@ -11,15 +11,13 @@
 class Circle : public Shape
 {
 private:
-    TwoDimensionalVector *_radiusVec;
+    TwoDimensionalVector _radiusVec;
 
 public:
-    Circle(TwoDimensionalVector *radiusVec) {
-        this->_radiusVec=radiusVec;
-    }
+    Circle(TwoDimensionalVector radiusVec) : _radiusVec(radiusVec){}
     ~Circle() {}
 
-    double radius() const {return _radiusVec->length(); }
+    double radius() const {return _radiusVec.length(); }
 
     double area() const override { return this->radius()*this->radius()*M_PI;}
 
@@ -31,20 +29,21 @@ public:
         std::string RightBracket = ")";
         std::string Circle = "Circle";
         std::string Comma = ",";
-        return Circle+Space+LeftBracket+_radiusVec->info()+RightBracket;
+        return Circle+Space+LeftBracket+_radiusVec.info()+RightBracket;
     }
 
     Iterator *createIterator(IteratorFactory *factory) override {
         return factory->createIterator();
     }
 
-    std::set<const Point*> getPoints() {
-        std::set<const Point*> AllVertices; 
+    std::set<Point> getPoints() {
+        std::set<Point> AllVertices; 
         double radius=this->radius();
-        Point* UpperRight = new Point(_radiusVec->a()->x()+radius,_radiusVec->a()->y()+radius);
-        Point* LowerLeft = new Point(_radiusVec->a()->x()-radius,_radiusVec->a()->y()-radius);
-        AllVertices.insert(UpperRight);
+        Point UpperRight (_radiusVec.a().x()+radius,_radiusVec.a().y()+radius);
+        Point LowerLeft (_radiusVec.a().x()-radius,_radiusVec.a().y()-radius);
         AllVertices.insert(LowerLeft);
+        AllVertices.insert(UpperRight);
+        
         return AllVertices;
     };
 
