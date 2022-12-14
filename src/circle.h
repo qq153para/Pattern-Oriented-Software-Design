@@ -4,6 +4,7 @@
 #include <cmath>
 #include "two_dimensional_vector.h"
 #include "shape.h"
+#include "./iterator/null_iterator.h"
 
 class Circle : public Shape
 {
@@ -30,4 +31,14 @@ public:
         std::string Comma = ",";
         return Circle+Space+LeftBracket+_radiusVec->info()+RightBracket;
     }
+
+    Iterator* createDFSIterator() override { return new NullIterator(); }
+
+    Iterator* createBFSIterator() override { return new NullIterator(); }
+
+    Iterator* createIterator() override { return new NullIterator(); }
+
+    void addShape(Shape *shape) {throw "fail";};
+    
+    void deleteShape(Shape *shape) {throw "fail";};
 };

@@ -3,6 +3,7 @@
 #include <string>
 #include "shape.h"
 #include "two_dimensional_vector.h"
+#include "./iterator/null_iterator.h"
 
 class Triangle : public Shape
 {
@@ -64,4 +65,15 @@ public:
         std::string Comma = ",";
         return Triangle+Space+LeftBracket+_v1->info()+Comma+Space+_v2->info()+RightBracket;
     }
+
+    Iterator* createDFSIterator() override { return new NullIterator(); }
+
+    Iterator* createBFSIterator() override { return new NullIterator(); }
+
+    Iterator* createIterator() override { return new NullIterator(); }
+
+    void addShape(Shape *shape) {throw "fail";};
+    
+    void deleteShape(Shape *shape) {throw "fail";};
+    
 };
