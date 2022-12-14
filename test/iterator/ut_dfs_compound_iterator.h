@@ -32,7 +32,7 @@ protected:
         cs2->addShape(new Circle(vec3));
         cs2->addShape(cs1);
 
-        it = cs2->createIterator(new DFSIteratorFactory());
+        it = cs2->createIterator(IteratorFactory::getInstance("DFS"));
     }
 
     void TearDown() override

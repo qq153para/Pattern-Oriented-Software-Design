@@ -28,7 +28,7 @@ protected:
         cs2->addShape(new Rectangle(vec1,vec2));
         cs2->addShape(new Circle(vec3));
 
-        it = cs2->createIterator(new ListIteratorFactory());
+        it = cs2->createIterator(IteratorFactory::getInstance("List"));
     }
 
     void TearDown() override

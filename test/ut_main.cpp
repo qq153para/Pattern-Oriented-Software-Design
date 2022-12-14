@@ -7,14 +7,17 @@
 #include "./ut_shape.h"
 #include "./ut_compound_shape.h"
 #include "./iterator/ut_null_iterator.h"
+#include "./iterator/ut_list_compound_iterator.h"
 #include "./iterator/ut_dfs_compound_iterator.h"
 #include "./iterator/ut_bfs_compound_iterator.h"
-#include "./iterator/ut_list_compound_iterator.h"
-#include "./visitor/ut_collision_detector.h"
 #include "./ut_bounding_box.h"
+#include "./visitor/ut_collision_detector.h"
+#include "./builder/ut_shape_builder.h"
+#include "./builder/ut_scanner.h"
+#include "./builder/ut_shape_parser.h"
 
-
-int main(int argc, char ** argv) {
+int main(int argc, char **argv)
+{
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }

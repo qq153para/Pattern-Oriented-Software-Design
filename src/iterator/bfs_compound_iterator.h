@@ -23,7 +23,7 @@ public:
         }
         while(_shapes.empty()==false){
             _currentShape=_shapes.front();
-            _current=_currentShape->createIterator(new ListIteratorFactory());
+            _current=_currentShape->createIterator(IteratorFactory::getInstance("List"));
             _shapes.pop_front();
             while(_current->isDone()==false){
                 _shapes.push_back(_current->currentItem());

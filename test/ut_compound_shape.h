@@ -92,8 +92,8 @@ TEST_F(CompoundShapeTest, TestcreateBFSIterator){
     cs5->addShape(Cir1);
     cs5->addShape(cs3);
 
-    Iterator* it = cs5->createIterator(new BFSIteratorFactory());
-
+    Iterator* it = cs5->createIterator(IteratorFactory::getInstance("BFS"));
+    
     ASSERT_EQ(cs4 , it->currentItem());
     it->next();
     ASSERT_EQ(Cir1 , it->currentItem());
@@ -140,7 +140,7 @@ TEST_F(CompoundShapeTest, TestcreateDFSIterator){
     cs5->addShape(Cir1);
     cs5->addShape(cs3);
 
-    Iterator* it = cs5->createIterator(new DFSIteratorFactory());
+    Iterator* it = cs5->createIterator(IteratorFactory::getInstance("DFS"));
 
     ASSERT_EQ(cs4 , it->currentItem());
     it->next();
@@ -170,7 +170,7 @@ TEST_F(CompoundShapeTest, TestdeleteShape) {
 
     cs4->deleteShape( Cir1 );
 
-    Iterator* it = cs4->createIterator(new BFSIteratorFactory());
+    Iterator* it = cs4->createIterator(IteratorFactory::getInstance("BFS"));
     for ( it->first(); !it->isDone(); it->next() ) {
         ASSERT_NE( Cir1, it->currentItem() );
     }
@@ -189,7 +189,7 @@ TEST_F(CompoundShapeTest, TestaddShape) {
 
     cs2->addShape( Rec1 );
 
-    Iterator* it = cs2->createIterator(new BFSIteratorFactory());
+    Iterator* it = cs2->createIterator(IteratorFactory::getInstance("BFS"));
     it->next();
     it->next();
     ASSERT_EQ(Rec1 , it->currentItem());

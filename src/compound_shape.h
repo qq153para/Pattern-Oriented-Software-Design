@@ -79,7 +79,7 @@ public:
     void deleteShape(Shape* shape) override {
         _shapes.remove(shape); 
         for (auto shape_ptr : _shapes) {
-            Iterator* it=shape_ptr->createIterator(new ListIteratorFactory());
+            Iterator* it=shape_ptr->createIterator(IteratorFactory::getInstance("List"));
             if(!it->isDone()){
                 shape_ptr->deleteShape(shape);        
             }

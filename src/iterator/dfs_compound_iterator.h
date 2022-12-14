@@ -22,7 +22,7 @@ public:
             _shpaes.clear();
             for (std::list<Shape*>::const_iterator it = _begin; it != _end; ++it){
                 // _currentIterator=(*it)->createDFSIterator();
-                _currentIterator=(*it)->createIterator(new DFSIteratorFactory());
+                _currentIterator=(*it)->createIterator(IteratorFactory::getInstance("DFS"));
                 _shpaes.push_back((*it));
                 while(_currentIterator->isDone()==false){
                     _shpaes.push_back(_currentIterator->currentItem());

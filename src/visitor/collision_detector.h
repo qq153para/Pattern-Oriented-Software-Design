@@ -42,7 +42,7 @@ public:
     }
 
     void visitCompoundShape(CompoundShape *compoundShape) override {
-        Iterator *it = compoundShape->createIterator(new ListIteratorFactory());
+        Iterator *it = compoundShape->createIterator(IteratorFactory::getInstance("List"));
         for (it-> first();!it->isDone() ;it->next()){
             (it->currentItem())->accept(this);
         }

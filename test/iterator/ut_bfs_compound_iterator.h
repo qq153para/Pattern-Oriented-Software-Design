@@ -32,7 +32,7 @@ protected:
         cs2->addShape(new Circle(vec3));
         cs2->addShape(cs1);
 
-        it = cs2->createIterator(new BFSIteratorFactory());
+        it = cs2->createIterator(IteratorFactory::getInstance("BFS"));
     }
 
     void TearDown() override
@@ -86,6 +86,5 @@ TEST_F(BFSCompoundIteratorTest, NextShouldThrowExceptionWhenIsDone)
     it->next();
     it->next();
     it->next();
-    
     ASSERT_ANY_THROW(it->currentItem());
 }
