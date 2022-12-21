@@ -7,7 +7,7 @@ private:
     SDL *adaptee_;
 
 public:
-    SDLAdapter(int width, int height, SDL* adaptee) : adaptee_(adaptee) {
+    SDLAdapter(int width, int height, SDL* adaptee) :adaptee_(adaptee){
         if(width>0 && height>0){
             adaptee->init(width,height);
         }

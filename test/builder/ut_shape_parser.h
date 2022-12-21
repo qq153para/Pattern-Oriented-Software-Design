@@ -37,3 +37,13 @@ TEST(ShapeParserrTest, ParseRectangleShouldBeCorrect) {
     delete *(result.begin());
 }
 
+// TEST(ShapeParserrTest, ParseMutipleShouldBeCorrect) {
+//     std::string input = "CompoundShape (CompoundShape (Circle (Vector ((-3.00, -3.00), (-2.00, -5.00))), Rectangle (Vector ((3.00, -1.00), (1.00, -2.00)),Vector ((1.00, -2.00), (2.00, -4.00))), Circle (Vector ((-1.50, -8.00), (0.00, -8.00)))), CompoundShape (Circle (Vector ((0.00, 0.00), (0.00, 3.00))),Triangle (Vector ((5.00, 8.00), (10.00, 8.00)),Vector ((5.00, 8.00), (8.00, 11.00)) )))";
+    
+//     ShapeParser parser(input);
+//     parser.parse();
+//     std::vector<Shape*> result = parser.getResult();
+//     ASSERT_EQ(63.5509, (result[0])->area());
+//     delete *(result.begin());
+// }
+

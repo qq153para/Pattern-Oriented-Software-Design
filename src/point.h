@@ -9,8 +9,8 @@ using namespace std;
 class Point
 {
 private:
-    const double _x;
-    const double _y;
+    double _x;
+    double _y;
 
 public:
     Point(double x, double y) :_x(x),_y(y){
@@ -37,6 +37,12 @@ public:
 
     bool operator<(const Point &pt) const {
         return _x < pt.x() || (_x == pt.x() && _y < pt.y());
+    }
+
+    void move(double deltaX, double deltaY)
+    {
+        _x += deltaX;
+        _y += deltaY;
     }
 
     std::string info() const {

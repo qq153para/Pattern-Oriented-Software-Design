@@ -42,6 +42,12 @@ public:
         return VectorAX * VectorBY - VectorBX * VectorAY;
     }
 
+    void move(double deltaX, double deltaY)
+    {
+        _a.move(deltaX, deltaY);
+        _b.move(deltaX, deltaY);
+    }
+    
     std::string info() const {
         std::string Space = " ";
         std::string LeftBracket = "(";

@@ -5,7 +5,7 @@ TEST(FileReaderTest, ReadShouldBeCorrect)
     FileReader reader("test/utils/test_input.txt");
     std::string result = reader.read();
     ASSERT_EQ(
-        "CompoundShape (\n    CompoundShape (\n        Circle (\n            Vector ((0.00, 0.00), (0.00, 5.00))\n        ), Rectangle (\n            Vector ((0.00, 0.00), (0.00, 5.00)),\n            Vector ((0.00, 0.00), (5.00, 0.00))\n        )\n    ), CompoundShape (\n        Circle (\n            Vector ((0.00, 0.00), (0.00, 3.00))\n        )\n    )\n)",
+        "CompoundShape (\r\n    CompoundShape (\r\n        Circle (\r\n            Vector ((0.00, 0.00), (0.00, 5.00))\r\n        ), Rectangle (\r\n            Vector ((0.00, 0.00), (0.00, 5.00)),\r\n            Vector ((0.00, 0.00), (5.00, 0.00))\r\n        )\r\n    ), CompoundShape (\r\n        Circle (\r\n            Vector ((0.00, 0.00), (0.00, 3.00))\r\n        )\r\n    )\r\n)",
         result
     );
 }

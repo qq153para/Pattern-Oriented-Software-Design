@@ -112,6 +112,12 @@ public:
         visitor->visitRectangle(this);
     };
 
+    void move(double deltaX, double deltaY) override
+    {
+        _lengthVec.move(deltaX, deltaY);
+        _widthVec.move(deltaX, deltaY);
+    }
+
     void addShape(Shape *shape) {throw "fail";};
     
     void deleteShape(Shape *shape) {throw "fail";};

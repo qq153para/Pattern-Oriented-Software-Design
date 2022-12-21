@@ -85,6 +85,12 @@ public:
         visitor->visitTriangle(this);
     };
 
+    void move(double deltaX, double deltaY) override
+    {
+        _v1.move(deltaX, deltaY);
+        _v2.move(deltaX, deltaY);
+    }
+
     void addShape(Shape *shape) {throw "fail";};
     
     void deleteShape(Shape *shape) {throw "fail";};

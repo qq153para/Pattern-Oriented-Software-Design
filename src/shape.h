@@ -16,5 +16,6 @@ public:
     virtual void accept(ShapeVisitor* visitor) = 0;
     virtual void addShape(Shape *shape) = 0;
     virtual void deleteShape(Shape *shape) = 0;
+    virtual void move(double deltaX, double deltaY) = 0;
     virtual ~Shape() {}
 };

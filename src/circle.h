@@ -51,6 +51,11 @@ public:
         visitor->visitCircle(this);
     };
 
+    void move(double deltaX, double deltaY) override
+    {
+        _radiusVec.move(deltaX, deltaY);
+    }
+    
     void addShape(Shape *shape) {throw "fail";};
     
     void deleteShape(Shape *shape) {throw "fail";};

@@ -15,9 +15,11 @@ public:
     :_shapes(shapes, shapes + size) {}
 
     ~CompoundShape() {
-        for (auto shape_ptr : _shapes) {
-            delete shape_ptr;
+        for (std::list<Shape *>::iterator it = _shapes.begin(); it != _shapes.end(); ++it)
+        {
+            delete *it;
         }
+        _shapes.clear();
     }
 
     double area() const override {
@@ -76,6 +78,12 @@ public:
         visitor->visitCompoundShape(this);
     };
 
+    void move(double deltaX, double deltaY) override
+    {
+        for (std::list<Shape *>::const_iterator it = _shapes.begin(); it != _shapes.end(); ++it)
+            (*it)->move(deltaX, deltaY);
+    }
+    
     void addShape(Shape* shape) override {
         _shapes.push_back(shape);
     }

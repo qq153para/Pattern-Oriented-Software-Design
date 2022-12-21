@@ -39,40 +39,31 @@ TEST_F(SDLAdapterTest, initCalledArgsShouldBeCorrect)
 
 TEST_F(SDLAdapterTest, widthAndHeightShouldBeGreaterThanZero)
 {
-    Canvas *canvas;
-    EXPECT_ANY_THROW( canvas = new SDLAdapter(0, 0, mockSDLRenderer));
+    Canvas *canvas= nullptr;
+    EXPECT_ANY_THROW( canvas= new SDLAdapter(0, 0, mockSDLRenderer));
     delete canvas;
 }
 
 TEST_F(SDLAdapterTest, renderDrawCircleCalledArgsShouldBeCorrect)
 {
-
-    std::string input = "Circle ( Vector ((0.00, 0.00), (0.00, 5.00)))";
-    ShapeParser parser(input);
-    // cout << input <<endl;
-    parser.parse();
     Point p1(0,0);
     Point p2(0,5);
     TwoDimensionalVector v1(p1,p2);
     Circle *cir =new Circle(v1);
     Canvas *canvas = new SDLAdapter(1024, 768, mockSDLRenderer);
     canvas->drawCircle(cir);
-    const double *callpoint = mockSDLRenderer->renderDrawCircleCalledArgs();
+    double const *callpoint = mockSDLRenderer->renderDrawCircleCalledArgs();
     ASSERT_NEAR(0,callpoint[0],0.001);
     ASSERT_NEAR(0,callpoint[1],0.001);
     ASSERT_NEAR(5,callpoint[2],0.001);
 
+    // delete [] callpoint ;
     delete cir;
     delete canvas;
 }
 
 TEST_F(SDLAdapterTest, renderDrawLinesCalledArgsShouldBeCorrectForNonRotatedRect)
 {
-
-    std::string input = "Rectangle (Vector ((2.00, -5.00), (4.00, -5.00)), Vector ((4.00, -5.00), (4.00, -7.00)))";
-    ShapeParser parser(input);
-    // cout << input <<endl;
-    parser.parse();
     Point p1(2,-5);
     Point p2(4,-5);
     Point p3(4,-7);
@@ -81,7 +72,7 @@ TEST_F(SDLAdapterTest, renderDrawLinesCalledArgsShouldBeCorrectForNonRotatedRect
     Rectangle *rect =new Rectangle(v1,v2);
     Canvas *canvas = new SDLAdapter(1024, 768, mockSDLRenderer);
     canvas->drawRectangle(rect);
-    const double *callpoint = mockSDLRenderer->renderDrawLinesCalledPoints();
+    double const *callpoint = mockSDLRenderer->renderDrawLinesCalledPoints();
     double size = mockSDLRenderer->renderDrawLinesCalledSize();
     ASSERT_NEAR(8,size,0.001);
     ASSERT_NEAR(2,callpoint[0],0.001);
@@ -93,16 +84,13 @@ TEST_F(SDLAdapterTest, renderDrawLinesCalledArgsShouldBeCorrectForNonRotatedRect
     ASSERT_NEAR(4,callpoint[6],0.001);
     ASSERT_NEAR(-7,callpoint[7],0.001);
 
+    delete [] callpoint ;
     delete rect;
     delete canvas;
 }
 
 TEST_F(SDLAdapterTest, renderDrawLinesCalledArgsShouldBeCorrectForTriangle1)
 {
-    std::string input = "Triangle (Vector ((4.00, -2.00), (6.00, -4.00)),Vector ((6.00, -8.00), (4.00, -2.00)))";
-    ShapeParser parser(input);
-    // cout << input <<endl;
-    parser.parse();
     Point p1(4,-2);
     Point p2(6,-4);
     Point p3(6,-8);
@@ -111,7 +99,7 @@ TEST_F(SDLAdapterTest, renderDrawLinesCalledArgsShouldBeCorrectForTriangle1)
     Triangle *tri =new Triangle(v1,v2);
     Canvas *canvas = new SDLAdapter(1024, 768, mockSDLRenderer);
     canvas->drawTriangle(tri);
-    const double *callpoint = mockSDLRenderer->renderDrawLinesCalledPoints();
+    double const *callpoint = mockSDLRenderer->renderDrawLinesCalledPoints();
     double size = mockSDLRenderer->renderDrawLinesCalledSize();
     ASSERT_NEAR(6,size,0.001);
     ASSERT_NEAR(4,callpoint[0],0.001);
@@ -121,6 +109,7 @@ TEST_F(SDLAdapterTest, renderDrawLinesCalledArgsShouldBeCorrectForTriangle1)
     ASSERT_NEAR(6,callpoint[4],0.001);
     ASSERT_NEAR(-4,callpoint[5],0.001);
 
+    delete [] callpoint ;
     delete tri;
     delete canvas;
 }
